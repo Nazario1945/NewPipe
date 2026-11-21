@@ -1,4 +1,4 @@
-name: Build Signed Release APK
+name: Compilar Release Puro
 on:
   workflow_dispatch:
 jobs:
@@ -29,5 +29,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: NewPipe-Firmado
+          name: NewPipe-Firmado-Puro
           path: app/build/outputs/apk/release/*.apk
