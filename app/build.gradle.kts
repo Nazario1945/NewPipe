@@ -56,6 +56,8 @@ configure<ApplicationExtension> {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         ndk { abiFilters += listOf("armeabi-v7a") }
+        resConfigs("es", "en")
+        packaging { density { exclude("xhdpi", "xxhdpi", "xxxhdpi") } }
     }
 
     buildTypes {
