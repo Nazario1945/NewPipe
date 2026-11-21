@@ -20,6 +20,7 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew assembleRelease -x test -x lint \
+            -DpackageSuffix=".miVersion" \
             -Pandroid.injected.signing.store.file=$(pwd)/app/keystore.jks \
             -Pandroid.injected.signing.store.password=${{ secrets.KEY_STORE_PASSWORD }} \
             -Pandroid.injected.signing.key.alias=${{ secrets.KEY_ALIAS }} \
