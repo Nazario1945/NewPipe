@@ -1,4 +1,4 @@
-name: Build APK
+name: Build Signed Release APK
 on:
   workflow_dispatch:
 jobs:
@@ -11,10 +11,22 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      - name: Build with Gradle
-        run: chmod +x gradlew && ./gradlew assembleDebug -x test -x lint
+          
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEY_STORE_BASE64 }}" | base64 --decode > app/keystore.jks
+          
+      - name: Build Release
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleRelease -x test -x lint \
+            -Pandroid.injected.signing.store.file=$(pwd)/app/keystore.jks \
+            -Pandroid.injected.signing.store.password=${{ secrets.KEY_STORE_PASSWORD }} \
+            -Pandroid.injected.signing.key.alias=${{ secrets.KEY_ALIAS }} \
+            -Pandroid.injected.signing.key.password=${{ secrets.KEY_PASSWORD }}
+            
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: NewPipe-APK
-          path: app/build/outputs/apk/debug/*.apk
+          name: NewPipe-Firmado
+          path: app/build/outputs/apk/release/*.apk
